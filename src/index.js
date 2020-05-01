@@ -1,11 +1,7 @@
 // import { map } from 'ramda'
 import { prop, spec } from './utils'
-import Idle1 from './img/idle-00.png'
-import Idle2 from './img/idle-01.png'
-import Idle3 from './img/idle-02.png'
-import Idle4 from './img/idle-03.png'
 import { g_inputQueue } from './input.js'
-import { initialPlayerState, updatePlayer } from './player.js'
+import { initialPlayerState, updatePlayer, playerAnimations } from './player.js'
 
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
@@ -13,19 +9,6 @@ ctx.imageSmoothingEnabled = false
 
 const spriteWidth = 50 
 const spriteHeight = 37
-
-const loadImg = url => {
-    const myIcon = new Image()
-    myIcon.src = url
-    return myIcon
-}
-
-let idleAnimFrames = [
-    loadImg(Idle1),
-    loadImg(Idle2),
-    loadImg(Idle3),
-    loadImg(Idle4),
-]
 
 // Initial world state
 let state = {
@@ -61,14 +44,14 @@ const SCALE = 4
 const draw = () => {
 	ctx.fillStyle = '#EDF2F7'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
-    ctx.drawImage(idleAnimFrames[state.player.frames.animFrame],
+    ctx.drawImage(playerAnimations[state.player.currentAnim][state.player.frames.animFrame],
         0,0,50,37,
         state.player.position.x, state.player.position.y, 50 * SCALE, 37 * SCALE)
 }
 let globalFrame = 0
 
 const step = t1 => t2 => {
-	if (t2 - t1 > 1000) {
+	if (t2 - t1 > 100) {
         // handle inputs 
         //console.log(g_inputQueue)
 
