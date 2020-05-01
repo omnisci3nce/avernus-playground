@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Avernus - Playground</title>
+		<style>
+			body {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				margin-top: 40px;
+			}
+			#canvas {
+				border: 2px solid #f0f0f0;
+				/*image-rendering: pixelated;*/
+				/* Can't get this ^ to work. (Webpack's fault?) */
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas" width="640" height="480"></canvas>
+		<p>Make yourself at home</p>
+		<script src="bundle.js"></script>
+	</body>
+</html>
+
