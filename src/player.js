@@ -8,6 +8,7 @@ import Run3 from './img/run-02.png'
 import Run4 from './img/run-03.png'
 import Run5 from './img/run-04.png'
 import Run6 from './img/run-05.png'
+import { updatePhysics } from './physics.js'
 
 function loadImg (url) {
     const myImg = new Image()
@@ -52,8 +53,8 @@ export const initialPlayerState = () => ({
 const ANIM_SPEED = 3
 
 // takes world state + TODO: inputs and returns new player state
-export const updatePlayer = (state) => {
-    //console.log('update player')
+export const updatePlayer = (state, inputs) => {
+    // ANIMATIONS
     const animLength = playerAnimations[state.player.currentAnim].length
 
     // updating animation data
@@ -63,6 +64,9 @@ export const updatePlayer = (state) => {
     }
     
     const n_animFrame = Math.trunc(state.player.frames.frame / ANIM_SPEED)
+
+    // PHYSICS
+    updatePhysics(state, inputs)
 
     const newState = {
         ...state.player,
