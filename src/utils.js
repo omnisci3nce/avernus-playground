@@ -10,7 +10,7 @@ export const spec = o => x => {
 // const adjust    = n => f => xs => mapi(x => i => i == n ? f(x) : x)(xs)
 // const dropFirst = xs => xs.slice(1)
 // const dropLast  = xs => xs.slice(0, xs.length - 1)
-// const id        = x => x
+export const id        = x => x
 // const k         = x => y => x
 // const map       = f => xs => xs.map(f)
 // const mapi      = f => xs => xs.map((x, i) => f(x)(i))

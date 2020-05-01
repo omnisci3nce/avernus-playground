@@ -4,6 +4,8 @@ import Idle1 from './img/idle-00.png'
 import Idle2 from './img/idle-01.png'
 import Idle3 from './img/idle-02.png'
 import Idle4 from './img/idle-03.png'
+import { g_inputQueue } from './input.js'
+import { initialPlayerState, updatePlayer } from './player.js'
 
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
@@ -25,11 +27,11 @@ let idleAnimFrames = [
     loadImg(Idle4),
 ]
 
+// Initial world state
 let state = {
-	playerPos: { x:0, y:0 },
-    frame: 0,
-    animFrame: 0
+	player: initialPlayerState()
 }
+console.log('initial state: ', state)
 
 // test spec
 
@@ -40,25 +42,10 @@ const addOne = c => {
     return c.x + 1
 }
 
-const updatePlayerPos = state => {
-    return {x:state.playerPos.x, y:state.playerPos.y}
-}
-
-const next = () => {
-    state.animFrame = Math.trunc(state.frame/2)
-
-    state.frame += 1
-
-    if (state.frame / 2 >= 4) {
-        state.frame = 0
-    }
-
-    state = spec({
-        playerPos: updatePlayerPos,
-        frame: prop('frame'),
-        animFrame: prop('animFrame')
+const next = state => {
+    return spec({
+        player: updatePlayer
     })(state)
-    // console.log(state)
 }
 
 /* 10 frames per second
@@ -74,31 +61,19 @@ const SCALE = 4
 const draw = () => {
 	ctx.fillStyle = '#EDF2F7'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
-    // console.log(state)
-    ctx.drawImage(idleAnimFrames[state.animFrame], 0, 0, 50, 30, state.playerPos.x, state.playerPos.y, 50 * SCALE , 30 * SCALE )
+    ctx.drawImage(idleAnimFrames[state.player.frames.animFrame],
+        0,0,50,37,
+        state.player.position.x, state.player.position.y, 50 * SCALE, 37 * SCALE)
 }
 let globalFrame = 0
 
-// mutable state
-const inputQueue = []
-
-const handleInput = ( q ) => {
-    q.shift()
-}
-
 const step = t1 => t2 => {
 	if (t2 - t1 > 1000) {
-        // globalFrame += 1
-
         // handle inputs 
+        //console.log(g_inputQueue)
 
-
-        // update state based on state and inputs
-        next()
-        console.log(inputQueue)
-        handleInput(inputQueue)
-
-
+        // update world state based on previous state and inputs
+        state = next(state)
         // draw to screen
 		draw()
 		
@@ -107,19 +82,6 @@ const step = t1 => t2 => {
 		window.requestAnimationFrame(step(t1))
 	}
 }
-
-// Key events
-
-window.addEventListener('keydown', e => {
-    switch (e.key) {
-        case 'w': case 'ArrowUp':
-            inputQueue.push('up')
-            break
-        case 'a': case 'ArrowLeft': console.log('left pressed'); break
-        case 's': case 'ArrowDown': console.log('down pressed'); break
-        case 'd': case 'ArrowRight': console.log('right pressed'); break
-    }
-})
 
 
 window.onload = () => {
