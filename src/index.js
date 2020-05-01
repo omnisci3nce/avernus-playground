@@ -44,6 +44,7 @@ const SCALE = 4
 const draw = () => {
 	ctx.fillStyle = '#EDF2F7'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
+    console.log(state)
     ctx.drawImage(playerAnimations[state.player.currentAnim][state.player.frames.animFrame],
         0,0,50,37,
         state.player.position.x, state.player.position.y, 50 * SCALE, 37 * SCALE)
@@ -51,7 +52,7 @@ const draw = () => {
 let globalFrame = 0
 
 const step = t1 => t2 => {
-	if (t2 - t1 > 100) {
+	if (t2 - t1 > 33) {
         // handle inputs 
         //console.log(g_inputQueue)
 
@@ -65,6 +66,22 @@ const step = t1 => t2 => {
 		window.requestAnimationFrame(step(t1))
 	}
 }
+// Key events
+
+window.addEventListener('keydown', e => {
+    switch (e.key) {
+        case 'w': case 'ArrowUp': console.log('up pressed'); break
+        case 'a': case 'ArrowLeft': console.log('left pressed'); break
+        case 's': case 'ArrowDown': 
+            state.player.currentAnim = 0
+            state.player.frames = {frame:0, animFrame: 0}
+            break
+        case 'd': case 'ArrowRight':
+            state.player.currentAnim = 1
+            state.player.frames = {frame:0, animFrame: 0}
+            break
+    }
+})
 
 
 window.onload = () => {

@@ -45,11 +45,11 @@ Object.freeze(PlayerAnims)
 export const initialPlayerState = () => ({
     position: { x: 10, y: 10 },
     velocity: { x: 0, y: 0 },
-    currentAnim: PlayerAnims.RUN,
+    currentAnim: PlayerAnims.IDLE,
     frames: { frame: 0, animFrame: 0 },
 })
 
-const ANIM_SPEED = 1
+const ANIM_SPEED = 3
 
 // takes world state + TODO: inputs and returns new player state
 export const updatePlayer = (state) => {
@@ -74,3 +74,5 @@ export const updatePlayer = (state) => {
     //console.log(newState)
     return newState
 }
+
+
